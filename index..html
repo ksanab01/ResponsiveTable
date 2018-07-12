@@ -1,0 +1,75 @@
+<script>
+// Bootstrap popover for table header items
+$('.popover-item').popover({
+	trigger: 'focus'
+});
+
+$(document).ready(function(){
+	   updateTables();
+	   $(window).on('resize', updateTables);                          
+		   
+	   $(document).on('click', '.overlay', function(){
+			$('.overlay').hide();
+	   });                           
+ });                                    
+</script>
+
+<table class="responsive team-table standings-table" id="standings">
+<thead><tr class="standings-table-headrow">
+	<th class="standings-table-headitem">Team</th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The overall standing of the team within the division.'>Pos</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of sets played.'>GP</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of games won by the team.'>W</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of games lost by the team.'>L</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of games tied by the team.'>T</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of defaulted games.'>D</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='Game Points: Wins = 2 points; Losses = 0 points; Ties = 1 point; Defaulted Games = -1 point.'>Pts</a></th>
+	<?php if ($League->UseSpiritPoints == 1) { ?>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='Spirit Points: The total number of spirit points awarded from opposing teams. A team can be awarded spirit points from 0 - 5 points per game.'>Spirit</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='Total Points: 75% of Game Points + 25% of Spirit Pts / 2.5. Spirit Pts are divided by 2.5 so that it is the same base number as Game Points.'>Total</a></th>
+	<?php } ?>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of points/goals scored by the team.'>GF</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of points/goals allowed by the team.'>GA</a></th>
+	<th><a class='popover-item' tabindex="0" role="button" data-content='The number of points/goals scored by the team subtract the number of points/goals allowed by the team.'>GD</a></th>
+</tr></thead><tbody>
+
+<?php
+$StandingsCount = count($StandingsArray);
+$time           = time();
+
+for ($i = 0; $i < $StandingsCount; $i++) {
+	$StandingsTeamSeasonID = $StandingsArray[$i]["TeamSeasonID"];
+
+	$teamImagePath   = fileUploadLocation . "/team-pictures/{$StandingsTeamSeasonID}.png";
+	$teamImageURL    = "/files/team-pictures/{$StandingsTeamSeasonID}.png?r={$time}";
+	$teamImageExists = (file_exists($teamImagePath)) ? true : false;
+
+	echo "<tr class=\"standings-table-row\" valign=\"middle\"><td class=\"standings-table-item\">";
+
+	echo ($teamImageExists) ? "<img src='{$teamImageURL}' class='user-avatar'>" : "<i class='icon-team fs40 user-avatar'></i>";
+
+	if ($StandingsTeamSeasonID == $LeagueChampsTeamSeasonID) {
+		echo "<img title='<b>League Champions!</b>' src=\"/images/icons/champion_48x48.png\" style=\"vertical-align:middle;margin-right:10px;\" />";
+	}
+
+	echo ($ShowHyperlinks) ? "<a href='/team/?TeamSeasonID={$StandingsTeamSeasonID}'>{$StandingsArray[$i]["Team"]}</a>" : $StandingsArray[$i]["Team"];
+	?>
+	</td>
+		<td class="standings-table-number" align="center" style="font-weight:bold;"><?= $StandingsArray[$i]["Rank"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["GamesPlayed"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["Wins"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["Losses"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["Ties"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["DefaultedGames"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["GamePoints"] ?></td>
+		<?php if ($League->UseSpiritPoints == 1) { ?>
+		<td class="standings-table-number" align="center"><?= (int)$StandingsArray[$i]["SpiritPoints"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["TotalPoints"] ?></td>
+		<?php } ?>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["PointsFor"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["PointsAgainst"] ?></td>
+		<td class="standings-table-number" align="center"><?= $StandingsArray[$i]["PointDifferential"] ?></td>
+		</tr>
+	<?php } ?>
+
+</tbody></table>

@@ -1,0 +1,73 @@
+
+table.responsive td, table.responsive th {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+table.responsive th:nth-child(-n+2), table.responsive td:nth-child(-n+2), table.responsive.pinned td {
+    display: none;
+}
+
+.standings-table-headrow th {
+  text-align: center;
+}
+
+.standings-table-headitem {
+  text-align: left !important;
+}
+
+.standings-table-row{
+    height: 64px;
+}
+
+.team-table .user-avatar{
+    display: none;
+}
+
+@media (min-width: 480px){
+
+    .overlay{
+        display: none;
+    }
+
+}
+
+@media (min-width: 800px){
+
+    table.responsive th:nth-child(-n+2), table.responsive td:nth-child(-n+2), table.responsive.pinned td {
+        display: table-cell;
+    }
+
+    .team-table .user-avatar{
+        display: table-cell;
+    }
+}
+
+.standings-table thead tr{
+    background-color: #f4f4f4;
+}
+
+.standings-table tr:first-child th{
+    padding-bottom: 11px;
+    padding-top: 14px;
+}
+
+.standings-table th, .standings-table td {
+  padding: 5px;
+}
+
+.team-table .user-avatar, .wallposts .user-avatar, .sub-requests .user-avatar {
+  width: 60px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  color: #e4e7ea;
+  float: left;
+  padding: 0;
+  margin-right: 10px;
+}
+
+.team-table i.user-avatar, .wallposts i.user-avatar, .sub-requests i.user-avatar {
+  padding: 5px;
+}
